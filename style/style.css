@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+#map{
+    width: 100%;
+    height: 100%;
+}
+section{
+    width: fit-content;
+    height: fit-content;
+    z-index: 100;
+    position: absolute;
+    top: 50px;
+    left: 100px;
+}
+section > h2 {
+    text-transform: uppercase;
+    font-size: 4.1em;
+    color: #fff;
+    text-shadow: 5px 5px #454e53;
+    font-weight: bold;
+    line-height: 20px;
+}
+.search{
+    width: 400px;
+    padding-left: 10px;
+    height: 60px;
+    background-color: #454e53;
+    border: 1px solid #454E53;
+    border-radius: 44px;
+    color: aliceblue;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+form{
+    width: 100%;
+}
+input[type=text]{
+    outline: none;
+    border: none;
+    width: 85%;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    font-size: 25px;
+}
+i{
+    font-size: 25px;
+}
+.stores-list-container{
+    width: 400px;
+    height: 470px;
+    margin-top: 5%;
+    padding-top: 5px;
+    background: #FEFFFE;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+}
+.stores-list{
+    overflow-y: scroll;
+    height: 470px;
+    width: 100%;
+}
+.stores-list::-webkit-scrollbar-track {
+    padding: 2px 0;
+    background-color: #fff;
+  }
+  
+  .stores-list::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .stores-list::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #737272;
+    border: 1px solid #000;
+  }
+.store-address span {
+    display: block;
+}
+.stores-list-container .store-container{
+    width: 90%;
+    margin: 0 auto;
+    height: fit-content;
+    font-size: 25px;
+    color: #514C4C;
+    border-bottom: 1px solid #979797;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+.store-phoneNumber{
+    color: #B5ADAD;
+    margin: 4% 0 ;
+}
+.store-idNumber{
+    border-radius: 50%;
+    width: 25px;
+    margin-top: 10%;
+    height: fit-content;
+    text-align: center;
+    color: white;
+    padding: 3px;
+    font-size: 0.9em;
+    background-color: #454E53;
+}
+
+.store-info-window{
+    border-bottom: 1px solid #979797;
+    margin: 0 auto;
+}
+#title-store, #WorkTime-store{
+    line-height: 5px;
+}
+.store-info-window-address{
+    display: flex;
+    height: fit-content;
+}
+.store-info-window-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
