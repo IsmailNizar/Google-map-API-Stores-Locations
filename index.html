@@ -11,12 +11,13 @@
 </head>
 <body>
     <div id="map"></div>
+    <h2>store locator</h2>
     <section>
-        <h2>store locator</h2>
+        
         <div class="search">
             <form action="">
-                <input type="text" name="zip-code-input" placeholder="Enter Zip Code">
-                <i class="fas fa-search"></i>
+                <input type="text" id="zip-code-input" placeholder="Enter Zip Code" onchange="searchStore()">
+                <i id="search-icon" class="fas fa-search" onclick="searchStore()"></i>
             </form>
         </div>
         <div class="stores-list-container">
@@ -28,7 +29,7 @@
 
     
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnUcCj2p1lXPi9wlqrAauVdbet5RboWp0&callback=initMap">
     </script>
 </body>
 </html>

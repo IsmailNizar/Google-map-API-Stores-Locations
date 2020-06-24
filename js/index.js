@@ -1,8 +1,13 @@
 var infoWindow;
+var markers = [];
 
 window.onload = () => {
   displayStores();
   storeMarker();
+  //  google.maps.event.trigger(markers[10], 'click');
+  //  console.log(markers[10].label.text);
+  SetOnClickListenner();
+
 }
 
 // Initialize and add the map
@@ -23,7 +28,14 @@ function initMap() {
 
 function displayStores(){
   
+
   var storesListContaier = "";
+  // document.querySelector('#search-icon').addEventListener('click', () =>{
+  //   let zip = document.getElementById("zip-code-input").value;
+  //   if (! parseInt(zip)){
+  //     alert('enter a valid zip code');
+  //   }
+  // });
   for(let [index, store] of stores.entries()){
     storesListContaier += `
       <div id="test" class="store-container">
@@ -36,7 +48,7 @@ function displayStores(){
                 ${store.phoneNumber}
             </div>
         </div>
-        <div class="store-idNumber">
+        <div class="store-idNumber" id="idNumber">
             ${index+1}
         </div>
       </div>
@@ -45,6 +57,37 @@ function displayStores(){
   document.querySelector(".stores-list").innerHTML = storesListContaier;
 }
 
+function searchStore(){
+
+    let zip = document.getElementById("zip-code-input").value;
+    if (! parseInt(zip)){
+      alert('enter a valid zip code');
+    }else{
+      var storesListContaier = "";
+      for(let [index, store] of stores.entries()){
+        if (store.id.includes(zip)){
+          storesListContaier += `
+            <div id="test" class="store-container">
+              <div class="store-info">
+                  <div class="store-address">
+                      <span> ${store.addressLines[0]} </span>
+                      <span>${store.addressLines[1]}</span>
+                  </div>
+                  <div class="store-phoneNumber">
+                      ${store.phoneNumber}
+                  </div>
+              </div>
+              <div class="store-idNumber" id="idNumber">
+                  ${index+1}
+              </div>
+            </div>
+          `; 
+        }
+      }
+      document.querySelector(".stores-list").innerHTML = storesListContaier;
+    }
+  
+}
 
 function storeMarker(){
   
@@ -54,7 +97,7 @@ function storeMarker(){
     var marker = this;
     infoWindow.setContent( marker.contentString );
     infoWindow.open(map, marker);
-    mkmap.lastmarkeropened = marker;
+    // mkmap.lastmarkeropened = marker;
   };
   // close the info window when click in any place in map
   google.maps.event.addListener(map, 'click', function() {
@@ -75,13 +118,13 @@ function storeMarker(){
       <div>
         <div class="store-info-window-address">
           <div class="store-info-window-icon">
-            <i class="	fas fa-external-link-square-alt " style="color:#454E53"></i>
+            <i class="	fas fa-external-link-square-alt " style="color:#1985A1"></i>
           </div> 
           <p>${storeM.address.streetAddressLine1}</p>
         </div>
         <div class="store-info-window-address">
           <div class="store-info-window-icon">
-            <i class="fa fa-phone-square fa-rotate-90" style="color:#454E53"></i>
+            <i class="fa fa-phone-square fa-rotate-90" style="color:#1985A1"></i>
           </div>
           <p>${storeM.phoneNumber}</p>
         </div>
@@ -98,8 +141,19 @@ function storeMarker(){
       label: {text: (index+1).toString(), color: "white"},
       contentString: contentString
     });
+    markers.push(marker);
     google.maps.event.addListener(marker, 'click', onMarkerClick );
   }
   map.fitBounds(bounds);
   
 }
+
+function SetOnClickListenner(){
+  var storeElements = document.querySelectorAll(".store-container");
+  storeElements.forEach( (storeElement, index) => {
+    storeElement.addEventListener('click', () =>{
+      new google.maps.event.trigger(markers[index], 'click');
+    });
+  });
+}
+
