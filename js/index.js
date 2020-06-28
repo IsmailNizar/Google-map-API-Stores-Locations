@@ -1,41 +1,54 @@
 var infoWindow;
 var markers = [];
 
-window.onload = () => {
-  displayStores();
-  storeMarker();
-  //  google.maps.event.trigger(markers[10], 'click');
-  //  console.log(markers[10].label.text);
-  SetOnClickListenner();
+function initMap() {
+  /* Initialize and add the map  */
 
+  // The location of losAngelos
+  var losAngelos = {
+          lat: 34.063380,
+          lng: -118.358080
+      };
+  // The map, centered at losAngelos
+    map = new google.maps.Map(document.getElementById('map'), {
+    center: losAngelos,
+    zoom: 10,
+    mapTypeId: 'roadmap',
+  });
+  searchStore();
 }
 
-// Initialize and add the map
-function initMap() {
-  
-  // The location of losAngelos
-    var losAngelos = {
-            lat: 34.063380,
-            lng: -118.358080
-        };
-    // The map, centered at losAngelos
-      map = new google.maps.Map(document.getElementById('map'), {
-      center: losAngelos,
-      zoom: 10,
-      mapTypeId: 'roadmap',
-    });
-  }
+function searchStore(){
+  /* Search a specific sotre from the list using ZIP code  */
 
-function displayStores(){
+  var foundStores =[];
+  let zip = document.getElementById("zip-code-input").value;
+  if(zip){
+    if (! parseInt(zip) && zip !== ""){
+      alert('enter a valid zip code');
+    }else{
+      for(let [index, store] of stores.entries()){
+        console.log(store.address.postalCode.substring(0, 5));
+        if (store.address.postalCode.substring(0, 5).includes(zip)){
+          foundStores.push(store);
+        }
+      }
+    }
+  }else{
+    foundStores = stores;
+  }
+  // clear location for every search
+  clearLocations();
+  displayStores(foundStores);
+  storeMarker(foundStores);
   
+}
+
+function displayStores(stores){
+  /*  Display list of stores  */
 
   var storesListContaier = "";
-  // document.querySelector('#search-icon').addEventListener('click', () =>{
-  //   let zip = document.getElementById("zip-code-input").value;
-  //   if (! parseInt(zip)){
-  //     alert('enter a valid zip code');
-  //   }
-  // });
+  // stores is a list of stores
   for(let [index, store] of stores.entries()){
     storesListContaier += `
       <div id="test" class="store-container">
@@ -55,44 +68,24 @@ function displayStores(){
     `; 
   }
   document.querySelector(".stores-list").innerHTML = storesListContaier;
+  SetOnClickListenner();
 }
 
-function searchStore(){
+function clearLocations(){
+  /* Clear all location in the map  */
 
-    let zip = document.getElementById("zip-code-input").value;
-    if (! parseInt(zip)){
-      alert('enter a valid zip code');
-    }else{
-      var storesListContaier = "";
-      for(let [index, store] of stores.entries()){
-        if (store.id.includes(zip)){
-          storesListContaier += `
-            <div id="test" class="store-container">
-              <div class="store-info">
-                  <div class="store-address">
-                      <span> ${store.addressLines[0]} </span>
-                      <span>${store.addressLines[1]}</span>
-                  </div>
-                  <div class="store-phoneNumber">
-                      ${store.phoneNumber}
-                  </div>
-              </div>
-              <div class="store-idNumber" id="idNumber">
-                  ${index+1}
-              </div>
-            </div>
-          `; 
-        }
-      }
-      document.querySelector(".stores-list").innerHTML = storesListContaier;
-    }
-  
+  for (var mark of markers){
+    mark.setMap(null);
+  }
+  markers.length = 0;
 }
 
-function storeMarker(){
+function storeMarker(stores){
+  /* Display store's markers in the map,
+     Display when click the info window of the store  */
   
   var infoWindow = new google.maps.InfoWindow;
-  // open info window
+  // function in a variable that open info window
   var onMarkerClick = function() {
     var marker = this;
     infoWindow.setContent( marker.contentString );
@@ -141,14 +134,17 @@ function storeMarker(){
       label: {text: (index+1).toString(), color: "white"},
       contentString: contentString
     });
+    // add marker to the list of markers
     markers.push(marker);
+    // add eventListener to every marker to show InfoWindow
     google.maps.event.addListener(marker, 'click', onMarkerClick );
   }
   map.fitBounds(bounds);
-  
 }
 
 function SetOnClickListenner(){
+  /* Display list of stores avaibles in JSON file  */
+
   var storeElements = document.querySelectorAll(".store-container");
   storeElements.forEach( (storeElement, index) => {
     storeElement.addEventListener('click', () =>{
@@ -156,4 +152,3 @@ function SetOnClickListenner(){
     });
   });
 }
-
